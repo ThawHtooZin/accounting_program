@@ -1,3 +1,6 @@
+<?php
+include 'config/connect.php';
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -26,20 +29,29 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-              <a href="edit.php" class="btn btn-warning">Edit</a>
-              <a href="delete.php" class="btn btn-danger">Delete</a>
-            </td>
-          </tr>
+          <?php
+          $stmt = $pdo->prepare("SELECT * FROM sale_items");
+          $stmt->execute();
+          $datas = $stmt->fetchall();
+          foreach ($datas as $data) {
+            ?>
+            <tr>
+              <td><?php echo $data['id']; ?></td>
+              <td><?php echo $data['item_name']; ?></td>
+              <td><?php echo $data['price'] ?>ks</td>
+              <td><?php echo $data['category_id'] ?></td>
+              <td><?php echo $data['date'] ?></td>
+              <td><?php echo $data['quantity'] ?></td>
+              <td><?php echo $data['voucher_no'] ?></td>
+              <td><?php echo $data['total_price'] ?>ks</td>
+              <td>
+                <a href="edit.php?id=<?php echo $data['id']; ?>" class="btn btn-warning">Edit</a>
+                <a href="delete.php?id=<?php echo $data['id']; ?>" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+            <?php
+          }
+          ?>
         </tbody>
       </table>
     </div>
